@@ -77,7 +77,7 @@ class GestorEstudiantes {
     }
 
     public void mostrarFichaTecnica() {
-        System.out.println("Equipo: \nIntegrante 1: Nombre, Rol \nIntegrante 2: Nombre, Rol\nEslogan: Nuestro eslogan.");
+        System.out.println("\nEquipo: \nIntegrante 1:\nNombre: Diego Nicolás Torres Vega. Rol: Development team \nIntegrante 2: Nombre, Rol\nEslogan: Nuestro eslogan.");
     }
 
     public void mostrarMenu() {
