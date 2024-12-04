@@ -136,5 +136,4 @@ class GestorEstudiantes {
         gestor.mostrarMenu();
     }
 }
-//prueba1
-//pruena2
+
