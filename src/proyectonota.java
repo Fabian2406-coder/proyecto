@@ -77,7 +77,7 @@ class GestorEstudiantes {
     }
 
     public void mostrarFichaTecnica() {
-        System.out.println("\nEquipo: \nIntegrante 1:\nNombre: Diego Nicolás Torres Vega. Rol: Development team \nIntegrante 2: Nombre:jose omar leal miranda, Rol:Development\nEslogan: Nuestro eslogan.");
+System.out.println("\nEquipo: \nIntegrante 1:\nNombre: Diego Nicolás Torres Vega. Rol: Development team \nIntegrante 2:\n Nombre:jose omar leal miranda, Rol:Development\nEslogan: Nuestro eslogan.");
     }
 
     public void mostrarMenu() {
@@ -136,6 +136,5 @@ class GestorEstudiantes {
         gestor.mostrarMenu();
     }
 }
-//comit1
-//comit2
+
 
