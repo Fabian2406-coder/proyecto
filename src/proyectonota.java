@@ -136,12 +136,3 @@ class GestorEstudiantes {
         gestor.mostrarMenu();
     }
 }
-
-<<<<<<< HEAD
-
-=======
-/*
-Prueba Commit2
-
- */
->>>>>>> f8310e395c94c44cec9d4f00ca3884ab944f7562
