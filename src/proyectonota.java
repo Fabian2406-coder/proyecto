@@ -1,9 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class proyectoNotas() {
-
-
     class Estudiante {
         private int id;
         private String nombre;
@@ -34,4 +31,3 @@ public class proyectoNotas() {
             return (double) sum / listaCalificaciones.size();
         }
     }
-}
