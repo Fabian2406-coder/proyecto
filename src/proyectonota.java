@@ -2,10 +2,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+// Clase para manejar excepciones específicas del estudiante
+class EstudianteExcepcion extends Exception {
+    public EstudianteExcepcion(String message) {
+        super(message);
+    }
+}
+
+
+// Clase Estudiante
 class Estudiante {
     private int id;
     private String nombre;
-    private List<Integer> listaCalificaciones;
+    private List<Double> listaCalificaciones;
 
     public Estudiante(int id, String nombre) {
         this.id = id;
@@ -17,23 +26,22 @@ class Estudiante {
         gestor.mostrarMenu();
     }
 
-    public void agregarCalificacion(int calificacion) {
-        if (calificacion >= 0 && calificacion <= 100) {
-            listaCalificaciones.add(calificacion);
-        } else {
-            System.out.println("Calificación no válida. Debe estar entre 0 y 100.");
+    public void agregarCalificacion(double calificacion) throws EstudianteExcepcion {
+        if (calificacion < 0 || calificacion > 100) {
+            throw new EstudianteExcepcion("Calificación no válida. Debe estar entre 0 y 100.");
         }
+        listaCalificaciones.add(calificacion);
     }
 
     public double calcularPromedio() {
         if (listaCalificaciones.isEmpty()) {
             return 0;
         }
-        int sum = 0;
-        for (int calificacion : listaCalificaciones) {
+        double sum = 0;
+        for (double calificacion : listaCalificaciones) {
             sum += calificacion;
         }
-        return (double) sum / listaCalificaciones.size();
+        return sum / listaCalificaciones.size();
     }
 
     public int getId() {
@@ -44,60 +52,67 @@ class Estudiante {
         return nombre;
     }
 
-    public List<Integer> getListaCalificaciones() {
+    public List<Double> getListaCalificaciones() {
         return listaCalificaciones;
     }
+}
 
-    static class GestorEstudiantes {
-        private List<Estudiante> estudiantes;
+// Clase GestorEstudiantes
+class GestorEstudiantes {
+    private List<Estudiante> estudiantes;
 
-        public GestorEstudiantes() {
-            estudiantes = new ArrayList<>();
-        }
+    public GestorEstudiantes() {
+        estudiantes = new ArrayList<>();
+    }
 
-        public void agregarEstudiante(Estudiante estudiante) {
-            estudiantes.add(estudiante);
-        }
+    public void agregarEstudiante(Estudiante estudiante) {
+        estudiantes.add(estudiante);
+    }
 
-        public void ingresarCalificaciones(int id, int calificacion) {
-            for (Estudiante estudiante : estudiantes) {
-                if (estudiante.getId() == id) {
-                    estudiante.agregarCalificacion(calificacion);
-                    break;
-                }
+    public void ingresarCalificaciones(int id, double calificacion) throws EstudianteExcepcion {
+        for (Estudiante estudiante : estudiantes) {
+            if (estudiante.getId() == id) {
+                estudiante.agregarCalificacion(calificacion);
+                return;
             }
         }
+        throw new EstudianteExcepcion("Estudiante no encontrado.");
+    }
 
-        public void consultarEstudiantes() {
-            for (Estudiante estudiante : estudiantes) {
-                double promedio = estudiante.calcularPromedio();
-                System.out.println("ID: " + estudiante.getId() + ", Nombre: " + estudiante.getNombre() + ", Promedio: " + promedio);
-            }
+    public void consultarEstudiantes() {
+        for (Estudiante estudiante : estudiantes) {
+            double promedio = estudiante.calcularPromedio();
+            System.out.println("ID: " + estudiante.getId() + ", Nombre: " + estudiante.getNombre() + ", Promedio: " + promedio);
         }
+    }
 
-        public void eliminarEstudiante(int id) {
-            estudiantes.removeIf(estudiante -> estudiante.getId() == id);
+    public void eliminarEstudiante(int id) throws EstudianteExcepcion {
+        boolean removed = estudiantes.removeIf(estudiante -> estudiante.getId() == id);
+        if (!removed) {
+            throw new EstudianteExcepcion("Estudiante no encontrado.");
         }
+    }
 
-        public void mostrarFichaTecnica() {
-            System.out.println("\nEquipo: \nIntegrante 1:\nNombre: Diego Nicolás Torres Vega. Rol: Development team \nIntegrante 2: Nombre, Rol\nEslogan: Nuestro eslogan.");
-        }
+    public void mostrarFichaTecnica() {
+        System.out.println("Equipo: \nIntegrante 1: Nombre, Rol \nIntegrante 2: Nombre, Rol\nEslogan: Nuestro eslogan.");
+    }
 
-        public void mostrarMenu() {
-            Scanner scanner = new Scanner(System.in);
-            while (true) {
-                System.out.println("\nMenú:");
-                System.out.println("1. Agregar estudiante");
-                System.out.println("2. Ingresar calificaciones");
-                System.out.println("3. Consultar estudiantes y promedios");
-                System.out.println("4. Eliminar estudiante");
-                System.out.println("5. Acerca de");
-                System.out.println("6. Salir");
-                System.out.print("Seleccione una opción: ");
+    public void mostrarMenu() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("\nMenú:");
+            System.out.println("1. Agregar estudiante");
+            System.out.println("2. Ingresar calificaciones");
+            System.out.println("3. Consultar estudiantes y promedios");
+            System.out.println("4. Eliminar estudiante");
+            System.out.println("5. Acerca de");
+            System.out.println("6. Salir");
+            System.out.print("Seleccione una opción: ");
 
-                int opcion = scanner.nextInt();
-                scanner.nextLine();  // Consumir el salto de línea
+            int opcion = scanner.nextInt();
+            scanner.nextLine();  // Consumir el salto de línea
 
+            try {
                 switch (opcion) {
                     case 1:
                         System.out.print("Ingrese ID del estudiante: ");
@@ -111,7 +126,7 @@ class Estudiante {
                         System.out.print("Ingrese ID del estudiante: ");
                         int idCal = scanner.nextInt();
                         System.out.print("Ingrese calificación: ");
-                        int calificacion = scanner.nextInt();
+                        double calificacion = scanner.nextDouble();
                         ingresarCalificaciones(idCal, calificacion);
                         break;
                     case 3:
@@ -131,6 +146,8 @@ class Estudiante {
                     default:
                         System.out.println("Opción no válida. Intente nuevamente.");
                 }
+            } catch (EstudianteExcepcion e) {
+                System.out.println(e.getMessage());
             }
         }
     }
